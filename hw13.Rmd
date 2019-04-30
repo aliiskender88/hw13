@@ -1,0 +1,67 @@
+
+---
+title: " Educational program choice by socioeconomic status"
+output:
+  html_document:
+    df_print: paged
+---
+
+### Introduction
+
+A team of researchers at the University of South Carolina were interested in exploring the effects of
+socioeconomic status (SES) on education. SES encompasses not just income but also educational
+attainment, financial security, and subjective perceptions of social status and social class.
+Socioeconomic status can contribute to quality of life attributes as well as the opportunities and
+privileges afforded to people within society. Using the hsb2 dataset of two hundred observations
+randomly sampled from the 2005 High School and Beyond survey, a national survey of high school
+seniors, the researchers studied four research questions related to SES.
+
+### Research Question #1
+
+Does socioeconomic status affect educational program choice?
+
+Graphs and Statistics
+Table 1 and Figures 1 and 2 numerically and visually display the distribution of each level of SES
+among program types.
+Chi square was performed to examine if SES influences program choice in high school. With
+X 2 (4) = 16,604 and p = 0.002, the results reveal that the program choice differs based on SES.
+
+```{r}
+
+library(tidyverse)
+library(ggplot2)
+
+hsb2 <- read_csv("hsb2.csv")
+
+
+hsb2$ses <- factor(hsb2$ses, labels = c("low", "middle", "high"))
+hsb2$prog <- factor(hsb2$prog, labels = c("genral", "academic", "vocational"))
+table(hsb2$ses, hsb2$prog)
+
+
+prop.table(table(hsb2$ses, hsb2$prog), 1)
+
+
+prop.table(table(hsb2$ses, hsb2$prog), 2)
+
+ggplot(hsb2, aes(x = ses, fill = prog)) +
+  geom_bar(position = "fill") +
+  labs(title = "Proportion of Propram Type across Social Economic Status Level",
+       x = "Social Economic Status",
+       Y = "Proportion")
+
+chisq.test(hsb2$ses,hsb2$prog)
+
+
+
+
+```
+
+
+### Conclusions
+While low SES is about equally distributed in all three programs, high SES families overwhelmingly
+send their children to academic programs. On the other hand, middle class families primarily send
+their children to academic programs, with the second choice as vocational. We could conclude
+middle class families have a more pragmatic approach if they see that their children have the
+potential to continue to college education and if not, they send their children to vocational school to
+go directly into the job market after high school.
